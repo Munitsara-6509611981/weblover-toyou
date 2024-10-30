@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #ffd6f5, #ff99cc);
+      color: #333;
+      padding: 20px;
+      background-image: url('https://www.onlygfx.com/wp-content/uploads/2019/06/6-pink-heart-pattern-5.png');
+      background-size: 150px;
+    }
+
+    body::before {
+      content: "";
+      background: url('https://www.onlygfx.com/wp-content/uploads/2019/06/6-pink-heart-pattern-5.png');
+      background-size: 150px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.5;
+      filter: blur(4px);
+      z-index: -1;
+    }
+
+    h1 {
+      font-family: 'Kanit', sans-serif;
+      color: #ffffff;
+      font-size: 50px;
+      margin-top: 10px;
+      animation: fadeIn 2s ease-in-out;
+      -webkit-text-stroke: 3px #3f3f3f;
+      text-shadow: 
+        0 0 10px rgba(255, 182, 193, 0.8),
+        0 0 20px rgba(255, 182, 193, 0.6),
+        0 0 30px rgba(255, 182, 193, 0.4),
+        0 0 40px rgba(255, 182, 193, 0.2);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    #question {
+      margin: 20px auto;
+      font-family: 'Poppins', sans-serif;
+      font-size: 40px;
+      padding: 10px;
+      width: 60%;
+      border: 3px solid #ff66b2;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 15px rgba(31, 27, 29, 0.5);
+    }
+
+    .btn {
+      display: inline-block;
+      font-size: 16px;
+      margin: 15px 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 25px;
+      padding: 10px 20px;
+      background-color: #ff99cc;
+      color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+      margin-top: 40px; /* ขยับปุ่มลงมา */
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+
+
+
+    #goBtn {
+      font-family: 'Poppins', sans-serif;
+      background-color: #33cc33;
+      color: #fff;
+      transition: width 0.5s, height 0.5s, font-size 0.5s;
+    }
+
+    #noGoBtn {
+      font-family: 'Poppins', sans-serif;
+      background-color: #ff5050;
+      color: #fff;
+    }
+
+    #heartSticker {
+      display: none;
+      margin-top: 20px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) translateX(-50%); }
+      50% { transform: translateY(-10px) translateX(-50%); }
+    }
+
+    /* Center shy image */
+    #reactionImg {
+    width: 350px; /* กำหนดขนาดใหญ่ที่ต้องการ */
+    height: auto; /* ให้ภาพปรับความสูงอัตโนมัติ */
+    border-radius: 20px;
+    margin-top: 5px;
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s;
+}
+#messageOverlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5000px;
+    font-weight: bold;
+    color: #ff3366;
+    text-align: center;
+    z-index: 9999;
+    display: none; /* ซ่อนข้อความเริ่มต้น */
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  </style>
+<script>
+  let clickCount = 0; // ตัวแปรนับจำนวนการคลิก
+
+  function goToPage() {
+    var questionElement = document.getElementById('question');
+    questionElement.innerHTML = 'เย่ รักเบบี๋ที่สุ๊ดด!!!';
+    questionElement.style.fontSize = '60px';
+    document.getElementById('goBtn').style.display = 'none';
+    document.getElementById('noGoBtn').style.display = 'none';
+    document.getElementById('heartSticker').style.display = 'block';
+    document.getElementById('reactionImg').style.display = 'none'; // ซ่อนภาพ shy.png
+  }
+
+  function resizeAndMoveButtons() {
+    var noGoBtn = document.getElementById('noGoBtn');
+    var goBtn = document.getElementById('goBtn');
+
+    goBtn.style.width = (parseFloat(goBtn.style.width) || 100) + 50 + 'px';
+    goBtn.style.height = (parseFloat(goBtn.style.height) || 40) + 20 + 'px';
+    goBtn.style.fontSize = (parseFloat(goBtn.style.fontSize) || 20) + 10 + 'px';
+
+    noGoBtn.style.position = 'absolute';
+    noGoBtn.style.left = Math.floor(Math.random() * (window.innerWidth - 100)) + 'px';
+    noGoBtn.style.top = Math.floor(Math.random() * (window.innerHeight - 50)) + 'px';
+
+    showAlertMessage(); // เรียกฟังก์ชันแสดงข้อความ alert เมื่อคลิกปุ่ม
+  }
+
+  function showAlertMessage() {
+    clickCount += 1;
+
+    // แสดงข้อความ alert ตามจำนวนการคลิก
+    switch (clickCount) {
+      case 1:
+        alert("แหน่ะ!!");
+        break;
+      case 2:
+        alert("แหน่ะะะะ เตือนครั้งที่หนึ่ง");
+        break;
+      case 3:
+        alert("ทักษ์!");
+        break;
+      case 4:
+        alert("ยังอีก!");
+        break;
+      case 5:
+        alert("ไม่รักกันแล้ว??? ;^;");
+        break;
+      case 6:
+        alert("จะเอาใช่ปะ!?");
+        break;  
+      case 7:
+        alert("เชอะ! ง้อด่วนนนนน");
+        break;
+      case 8:
+        alert("ง้อด่วนนนนน");
+        break;
+          
+      default:
+        alert("ง้อออออ     ด่วนนนนน");
+    }
+  }
+
+  function changeImageOnHover(imgId, imgSrc) {
+    document.getElementById(imgId).src = imgSrc;
+  }
+
+  function resetImage(imgId, originalSrc) {
+    document.getElementById(imgId).src = originalSrc;
+  }
+</script>
+
+</head>
+<body>
+<h1>Love U :]</h1>
+<div id="question">Do you miss me?</div>
+
+<!-- Reaction Image Below the Question -->
+<img id="reactionImg" src="shy.png" alt="Shy Image">
+<br>
+
+<button id="goBtn" class="btn" 
+  onmouseenter="changeImageOnHover('reactionImg', 'love.png')" 
+  onmouseleave="resetImage('reactionImg', 'shy.png')" 
+  onclick="goToPage()">Makkub!</button>
+
+<button id="noGoBtn" class="btn" 
+  onmouseenter="changeImageOnHover('reactionImg', 'no.png')" 
+  onmouseleave="resetImage('reactionImg', 'shy.png')" 
+  onclick="resizeAndMoveButtons()">Nooooo</button>
+
+<img id="heartSticker" src="https://i.pinimg.com/originals/9c/ff/77/9cff77aa5555a8bd8effedc3672b2124.png" alt="Heart Sticker">
+</body>
+</html>

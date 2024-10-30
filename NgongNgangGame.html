@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เกมปลูกผัก</title>
+  <style>
+    #game-container {
+      text-align: center;
+    }
+
+    #field {
+      width: 400px;
+      height: 400px;
+      border: 1px solid green;
+      margin: 20px auto;
+      position: relative; /* เพิ่ม position: relative เพื่อให้สามารถควบคุมการสร้างผักในพื้นที่ */
+    }
+
+    .planted {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+    }
+
+    .carrot {
+      background-color: orange; /* สีส้ม */
+    }
+
+    .lettuce {
+      background-color: green; /* สีเขียว */
+    }
+
+    .tomato {
+      background-color: red; /* สีแดง */
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div id="field"></div>
+    <button onclick="plantVegetable('carrot', 3000)">ปลูกแครอท</button>
+    <button onclick="plantVegetable('lettuce', 5000)">ปลูกผักกาดขาว</button>
+    <button onclick="plantVegetable('tomato', 7000)">ปลูกมะเขือเทศ</button>
+    <button onclick="harvestVegetable()">เก็บเกี่ยวผัก</button>
+  </div>
+
+  <script>
+    const MAX_VEGETABLES = 9; // จำนวนผักสูงสุดที่สามารถปลูกได้
+
+    let plantedVegetables = 0;
+    let isHarvested = false;
+
+    function plantVegetable(vegetableType, growthTime) {
+      if (plantedVegetables < MAX_VEGETABLES && !isHarvested) {
+        const field = document.getElementById('field');
+        const vegetable = document.createElement('div');
+        vegetable.className = 'planted ' + vegetableType; // เพิ่มชนิดของผัก
+        vegetable.style.left = Math.random() * 350 + 'px'; // ตำแหน่งการปลูกผักแบบสุ่ม
+        vegetable.style.top = Math.random() * 350 + 'px'; // ตำแหน่งการปลูกผักแบบสุ่ม
+        field.appendChild(vegetable);
+        plantedVegetables++;
+
+        setTimeout(growVegetable, growthTime, vegetable); // ให้ผักโตในเวลาที่กำหนด
+      } else if (isHarvested) {
+        alert('คุณได้เก็บเกี่ยวผักไปแล้ว!');
+      } else {
+        alert('สวนเต็มแล้ว ไม่สามารถปลูกผักเพิ่มได้อีกแล้ว!');
+      }
+    }
+
+    function growVegetable(vegetable) {
+      if (plantedVegetables > 0 && !isHarvested) {
+        vegetable.style.width = '80px'; // ปรับขนาดของผักเมื่อโต
+        vegetable.style.height = '80px'; // ปรับขนาดของผักเมื่อโต
+      }
+    }
+
+    function harvestVegetable() {
+      if (plantedVegetables > 0 && !isHarvested) {
+        const field = document.getElementById('field');
+        field.innerHTML = ''; // ล้างผักทั้งหมดออกจากสวน
+        plantedVegetables = 0;
+        isHarvested = true;
+      } else if (isHarvested) {
+        alert('คุณได้เก็บเกี่ยวผักไปแล้ว!');
+      } else {
+        alert('ยังไม่มีผักในสวน!');
+      }
+    }
+  </script>
+</body>
+</html>
